@@ -8,7 +8,8 @@ public class Main {
     public static void main(String[] args) throws IOException {
         BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
         StringTokenizer tokenizer = new StringTokenizer(reader.readLine());
-
+        reader.close();
+        
         int M = Integer.parseInt(tokenizer.nextToken());
         int N = Integer.parseInt(tokenizer.nextToken());
 
