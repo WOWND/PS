@@ -9,19 +9,17 @@ public class Main {
 
         int n = Integer.parseInt(reader.readLine());
         int[] arr = new int[n];
-
         for (int i = 0; i < n; i++) {
             arr[i] = Integer.parseInt(reader.readLine());
         }
-        int cut = (int) Math.round(n * 0.15);
 
         Arrays.sort(arr);
 
-        double sum = 0;
-        for (int i = cut; i < n - cut; i++) {
-            sum += arr[i];
+        int trimCount = (int) Math.round(n * 0.15);
+        double answer = 0;
+        for (int i = trimCount; i < n - trimCount; i++) {
+            answer += arr[i];
         }
-
-        System.out.println(Math.round(sum / (n - cut * 2)));
+        System.out.println( Math.round(answer / (n - 2 * trimCount)));
     }
 }
