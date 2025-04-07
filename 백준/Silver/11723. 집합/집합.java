@@ -10,7 +10,6 @@ public class Main {
         int M = Integer.parseInt(reader.readLine());
         HashSet<Integer> set = new HashSet<>();
 
-
         StringBuilder sb = new StringBuilder();
         for (int i = 0; i < M; i++) {
             String[] cmd = reader.readLine().split(" ");
