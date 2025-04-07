@@ -9,10 +9,7 @@ public class Main {
 
         int M = Integer.parseInt(reader.readLine());
         HashSet<Integer> set = new HashSet<>();
-        HashSet<Integer> allSet = new HashSet<>();
-        for (int i = 1; i <= 20; i++) {
-            allSet.add(i);
-        }
+
 
         StringBuilder sb = new StringBuilder();
         for (int i = 0; i < M; i++) {
@@ -34,7 +31,9 @@ public class Main {
                     else set.add(x);
                     break;
                 case "all":
-                    set = new HashSet<>(allSet);
+                    for (int j = 1; j <= 20; j++) {
+                        set.add(j);
+                    }
                     break;
                 case "empty":
                     set.clear();
