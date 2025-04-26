@@ -18,13 +18,15 @@ public class Main {
         int num = Integer.parseInt(reader.readLine());
         int answer = 0;
 
-        HashSet<Integer> set2 = new HashSet<>(set);
         for (Integer i : set) {
-            set2.remove(i);
-            if (set2.contains(num - i)) {
-                answer++;
+            if (set.contains(num - i)) {
+                if (i == num - i) {
+                    //answer++;
+                } else {
+                    answer++;
+                }
             }
         }
-        System.out.println(answer);
+        System.out.println(answer / 2);
     }
 }
