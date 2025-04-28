@@ -1,6 +1,4 @@
 import java.io.*;
-import java.util.LinkedList;
-import java.util.StringTokenizer;
 
 class Node{
     Node next;
@@ -16,8 +14,9 @@ public class Main {
     public static void main(String[] args) throws IOException {
         BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
 
-        Node head = new Node('\0');
-        Node cursor = head;
+        Node start = new Node('\0');
+        Node end = new Node('\0');
+        Node cursor = start;
 
         for (char c : reader.readLine().toCharArray()) {
             Node newNode = new Node(c);
@@ -25,6 +24,8 @@ public class Main {
             cursor.next = newNode; //커서의 다음을 나로
             cursor = newNode;
         }
+        cursor.next = end;
+
 
         int n = Integer.parseInt(reader.readLine());
         for (int i = 0; i < n; i++) {
@@ -32,43 +33,38 @@ public class Main {
             char cmd = str.charAt(0);
             switch (cmd){
                 case 'L':
-                    if (cursor != head) { //커서가 맨 앞이 아닐때만
+                    if (cursor != start) { //커서가 맨 앞이 아닐때만
                         cursor = cursor.prev;
                     }
                     break;
                 case 'D':
-                    if (cursor.next != null) {
+                    if (cursor.next != end) {
                         cursor = cursor.next;
                     }
                     break;
                 case 'B':
-                    if (cursor != head) {
+                    if (cursor != start) {
                         cursor.prev.next = cursor.next;
-                        if (cursor.next != null) {
-                            cursor.next.prev = cursor.prev;
-                        }
+                        cursor.next.prev = cursor.prev;
                         cursor = cursor.prev;
                     }
                     break;
                 case 'P':
                     Node newNode = new Node(str.charAt(2));
                     newNode.next = cursor.next;
-                    if (cursor.next != null) {
-                        cursor.next.prev = newNode;
-                    }
-                    cursor.next = newNode;
                     newNode.prev = cursor;
+                    cursor.next.prev = newNode;
+                    cursor.next = newNode;
                     cursor = newNode;
                     break;
             }
         }
 
         StringBuilder sb = new StringBuilder();
-        while (head != null) {
-            if (head.c != '\0') {
-                sb.append(head.c);
-            }
-            head = head.next;
+        start = start.next;
+        while (start != end) {
+            sb.append(start.c);
+            start = start.next;
         }
         System.out.println(sb);
     }
