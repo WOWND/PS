@@ -33,7 +33,7 @@ public class Main {
                     continue;
                 }
 
-                if (board[nx] != -1 && board[nx] <= board[x]) {
+                if (board[nx] >=0) {
                     continue;
                 }
 
