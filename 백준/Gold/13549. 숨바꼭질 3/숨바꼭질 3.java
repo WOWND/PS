@@ -5,13 +5,12 @@ import java.util.Queue;
 
 
 public class Main {
-    static int[] board;
 
 
     public static void main(String[] args) throws IOException {
         int N = read();
         int K = read();
-        board = new int[200_001];
+        int[] board = new int[200_001];
         Arrays.fill(board, -1);
 
         Queue<Integer> queue = new ArrayDeque<>();
