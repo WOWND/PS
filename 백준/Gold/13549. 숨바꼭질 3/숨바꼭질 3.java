@@ -34,20 +34,13 @@ public class Main {
                     continue;
                 }
 
+                if (board[nx] != -1 && board[nx] <= board[x]) {
+                    continue;
+                }
 
-                if (i == 0) {
-                    if (board[nx] != -1 && board[nx] <= board[x]) {
-                        continue;
-                    }
-                    queue.offer(nx);
-                    board[nx] = board[x];
-                    continue;
-                }
-                if (board[nx] != -1 &&board[nx] <= board[x]) {
-                    continue;
-                }
                 queue.offer(nx);
-                board[nx] = board[x] + 1;
+                board[nx] = board[x];
+                if(i !=0) board[nx]++;
             }
         }
     }
