@@ -1,106 +1,107 @@
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.util.*;
+import org.w3c.dom.Node;
+
+import java.io.*;
+import java.util.ArrayDeque;
+import java.util.Arrays;
+import java.util.Queue;
+
 
 public class Main {
-    public static class Node{
-        public int x;
-        public int y;
-        public int k;
-        public int steps;
+    static class Node{
+        int x;
+        int y;
+        int count;
 
-        public Node(int x, int y, int k, int steps) {
+        public Node(int x, int y, int count) {
             this.x = x;
             this.y = y;
-            this.k = k;
-            this.steps = steps;
+            this.count = count;
         }
     }
-    public static int W;
-    public static int H;
 
-    public static int[][] normalMovementSet = {
-            {1, 0}, {0, 1}, {-1, 0}, {0, -1}  //기본 움직임
-    };
-
-
-
-    public static int[][] horseMovement = {
-            {2, 1}, {2, -1}, {-2, 1}, {-2, -1}, {1, 2}, {1, -2}, {-1, 2}, {-1, -2} //말 움직임
-    };
+    static int[] dx = {1, -1, 0, 0, 2, 2, -2, -2, 1, 1, -1, -1};
+    static int[] dy = {0, 0, 1, -1, 1, -1, 1, -1, 2, -2, 2, -2};
 
     public static void main(String[] args) throws IOException {
-        //점프를 몇번 사용했는지도 체크해줘야함
-        BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
-        int K = Integer.parseInt(reader.readLine());
-        StringTokenizer tokenizer = new StringTokenizer(reader.readLine());
-        H = Integer.parseInt(tokenizer.nextToken());
-        W = Integer.parseInt(tokenizer.nextToken());
+        int K = read();
+        int W = read();
+        int H = read();
 
-        boolean[][][] visited = new boolean[W][H][K + 1];
-        for (int i = 0; i < W; i++) {
-            String str = reader.readLine();
-            for (int j = 0; j < H; j++) {
-                if (str.charAt(j * 2) == '1') {
-                    for (int k = 0; k <= K; k++) {
-                        visited[i][j][k] = true; //장애물은 가지 못하도록 이미 방문한거로 처리해버림
-                    }
-                }
+        int[][] board = new int[H][W];
+        int[][][] dist = new int[K+1][H][W];
+
+        for (int i = 0; i < H; i++) {
+            for (int j = 0; j < W; j++) {
+                board[i][j] = read();
             }
         }
-        System.out.println(bfs(visited,K));
-    }
 
-
-    public static int bfs(boolean[][][] visited,int K) {
-        Queue<Node> queue = new ArrayDeque<>();
-        queue.offer(new Node(0, 0, K, 0));
         for (int i = 0; i <= K; i++) {
-            visited[0][0][i] = true;
+            for (int j = 0; j < H; j++) {
+                Arrays.fill(dist[i][j], -1);
+            }
         }
 
-        ArrayList<Integer> results = new ArrayList<>();
+        Queue<Node> queue = new ArrayDeque<>();
+        queue.offer(new Node(0, 0, K));
+        dist[K][0][0] = 0;
 
         while (!queue.isEmpty()) {
             Node current = queue.poll();
             int x = current.x;
             int y = current.y;
-            int k = current.k;
-            int steps = current.steps;
+            int count = current.count;
 
-            if (x == W - 1 && y == H - 1) {
-                results.add(steps);
-                continue;
+            if (x == H - 1 && y == W - 1) {
+                System.out.println(dist[count][x][y]);
+                return;
             }
 
-            for (int[] ints : normalMovementSet) { //일반 움직임
-                int nx = ints[0] + x;
-                int ny = ints[1] + y;
-
-                if (isValid(nx, ny) && !visited[nx][ny][k]) { //범위가 유효하고 방문한 적이 없으면
-                    queue.offer(new Node(nx, ny, k, steps + 1));
-                    visited[nx][ny][k] = true;
-                }
-            }
-
-            if (k > 0) { //말 움직임
-                for (int[] ints : horseMovement) {
-                    int nx = ints[0] + x;
-                    int ny = ints[1] + y;
-
-                    if (isValid(nx, ny) && !visited[nx][ny][k - 1]) { //범위가 유효하고 방문한 적이 없으면
-                        queue.offer(new Node(nx, ny, k - 1, steps + 1));
-                        visited[nx][ny][k - 1] = true;
+            for (int i = 0; i < 12; i++) {
+                int nCount = count;
+                if (i >= 4) { //말 움직임 불가능
+                    if (count == 0) {
+                        break;
                     }
+                    nCount--;
                 }
+
+                int nx = x + dx[i];
+                int ny = y + dy[i];
+
+                if (nx < 0 || ny < 0 || nx >= H || ny >= W) { //범위 밖
+                    continue;
+                }
+                if (board[nx][ny] == 1) { //장애물이면
+                    continue;
+                }
+                if (dist[nCount][nx][ny] >= 0) { //이미 방문
+                    continue;
+                }
+                queue.offer(new Node(nx, ny, nCount));
+                dist[nCount][nx][ny] = dist[count][x][y] + 1;
             }
         }
 
-        return results.isEmpty() ? -1 : Collections.min(results);
+        System.out.println(-1);
     }
 
-    public static boolean isValid(int x, int y) {
-        return x >= 0 && x < W && y >= 0 && y < H;
+    public static int read() throws IOException {
+        int d = System.in.read();
+        boolean isMinus = false;
+
+        if (d == '-') {
+            isMinus = true;
+            d = System.in.read();
+        }
+        int o = d - '0';
+
+        while ((d = System.in.read()) > ' ') {
+            o = (o << 3) + (o << 1) + (d - '0');
+        }
+        return isMinus ? -o : o;
+
     }
 }
+
+
