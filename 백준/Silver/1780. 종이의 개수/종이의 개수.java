@@ -25,30 +25,29 @@ public class Main {
         }
     }
 
-    public static void func(int N, int r, int c) {
-        if (N == 0) {
-            return;
-        }
-
+    public static boolean check(int N, int r, int c) {
         int num = board[r][c];
-        boolean flag = false;
 
-        A: for (int i = r; i < r + N; i++) {
+        for (int i = r; i < r + N; i++) {
             for (int j = c; j < c + N; j++) {
                 if (board[i][j] != num) {
-                    flag = true;
-                    break A;
+                    return true;
                 }
             }
         }
-        if (flag) {
-            for (int i = 0; i < N; i += N/3) {
-                for (int j = 0; j < N; j += N/3) {
-                    func(N / 3, r + i, c + j);
+        return false;
+    }
+
+    public static void func(int N, int r, int c) {
+        if (check(N, r, c)) {
+            int n = N / 3;
+            for (int i = 0; i < 3; i++) {
+                for (int j = 0; j < 3; j++) {
+                    func(n, r + i * n, c + j * n);
                 }
             }
         } else {
-            answer[num + 1]++;
+            answer[board[r][c] + 1]++;
         }
     }
 }
