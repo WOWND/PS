@@ -19,7 +19,7 @@ public class Main {
         }
 
 
-        func(0, N - 1, N / 3);
+        func(0, N - 1, N);
 
         StringBuilder sb = new StringBuilder();
         for (int i = 0; i < N; i++) {
@@ -33,7 +33,7 @@ public class Main {
 
 
     public static void func(int r, int c, int n) {
-        if (n == 1) {
+        if (n == 3) {
             answer[r][c] = '*';
             answer[r + 1][c - 1] = '*';
             answer[r + 1][c + 1] = '*';
@@ -43,10 +43,10 @@ public class Main {
             return;
         }
 
-
-        func(r, c, n / 2);
-        func(r + n / 2 * 3, c - (3 * (n / 2)), n / 2);
-        func(r + n / 2 * 3, c + (3 * (n / 2)), n / 2);
+        int nn = n / 2;
+        func(r, c, nn);
+        func(r + nn, c - nn, nn);
+        func(r + nn, c + nn, nn);
 
     }
 }
