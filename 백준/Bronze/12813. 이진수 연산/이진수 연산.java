@@ -1,30 +1,27 @@
 import java.io.*;
 
 public class Main {
-
     public static void main(String[] args) throws IOException {
         BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
 
-        int[][] nums = new int[2][100_000];
+        char[] arr1 = reader.readLine().toCharArray();
+        char[] arr2 = reader.readLine().toCharArray();
+        reader.close();
+        
+        StringBuilder sb1 = new StringBuilder(100_000);
+        StringBuilder sb2 = new StringBuilder(100_000);
+        StringBuilder sb3 = new StringBuilder(100_000);
+        StringBuilder sb4 = new StringBuilder(100_000);
+        StringBuilder sb5 = new StringBuilder(100_000);
 
-        for (int i = 0; i < 2; i++) {
-            String string = reader.readLine();
-            for (int j = 0; j < 100_000; j++) {
-                nums[i][j] = string.charAt(j) - '0';
-            }
-        }
-
-        StringBuilder sb1 = new StringBuilder();
-        StringBuilder sb2 = new StringBuilder();
-        StringBuilder sb3 = new StringBuilder();
-        StringBuilder sb4 = new StringBuilder();
-        StringBuilder sb5 = new StringBuilder();
         for (int i = 0; i < 100_000; i++) {
-            sb1.append(nums[0][i] & nums[1][i]);
-            sb2.append(nums[0][i] | nums[1][i]);
-            sb3.append(nums[0][i] ^ nums[1][i]);
-            sb4.append(1 - nums[0][i]);
-            sb5.append(1 - nums[1][i]);
+            int a = arr1[i] - '0';
+            int b = arr2[i] - '0';
+            sb1.append(a & b);
+            sb2.append(a | b);
+            sb3.append(a ^ b);
+            sb4.append(1 - a);
+            sb5.append(1 - b);
         }
         System.out.println(sb1);
         System.out.println(sb2);
