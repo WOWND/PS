@@ -1,16 +1,14 @@
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.StringTokenizer;
 
 public class Main {
 
     static int N;
     static int M;
-    static ArrayList<Integer> list = new ArrayList<>();
-    static HashSet<Integer> set = new HashSet<>();
+    static int[] answer = new int[10];
+    static boolean[] isUsed = new boolean[10];
     static StringBuilder sb = new StringBuilder();
 
     public static void main(String[] args) throws IOException {
@@ -27,20 +25,19 @@ public class Main {
 
     static void func(int count) {
         if (count == M) {
-            for (Integer i : list) {
-                sb.append(i).append(' ');
+            for (int i = 0; i < M; i++) {
+                sb.append(answer[i]).append(' ');
             }
             sb.append('\n');
             return;
         }
 
         for (int i = 1; i <= N; i++) {
-            if (!set.contains(i)) {
-                list.add(i);
-                set.add(i);
+            if (!isUsed[i]) {
+                answer[count] = i;
+                isUsed[i] = true;
                 func(count + 1);
-                list.remove(count);
-                set.remove(i);
+                isUsed[i] = false;
             }
         }
     }
