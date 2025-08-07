@@ -2,7 +2,6 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.StringTokenizer;
 
 public class Main {
@@ -11,8 +10,7 @@ public class Main {
     static int M;
     static int[] answer = new int[10];
     static ArrayList<Integer> nums = new ArrayList<>();
-    static HashSet<String> set = new HashSet<>();
-    static StringBuilder stringBuilder = new StringBuilder();
+    static StringBuilder sb = new StringBuilder();
 
     public static void main(String[] args) throws IOException {
         BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
@@ -31,21 +29,15 @@ public class Main {
         reader.close();
 
         func(0);
-        System.out.print(stringBuilder);
+        System.out.print(sb);
     }
 
     static void func(int count) {
         if (count == M) {
-            StringBuilder sb = new StringBuilder();
             for (int i = 0; i < M; i++) {
                 sb.append(answer[i]).append(' ');
             }
-            String s = sb.toString();
-            if (!set.contains(s)) {
-                set.add(s);
-                sb.append('\n');
-                stringBuilder.append(sb);
-            }
+            sb.append('\n');
             return;
         }
 
