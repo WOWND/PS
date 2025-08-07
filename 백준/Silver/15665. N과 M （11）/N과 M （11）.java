@@ -1,7 +1,7 @@
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.util.Arrays;
+import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.StringTokenizer;
 
@@ -10,7 +10,7 @@ public class Main {
     static int N;
     static int M;
     static int[] answer = new int[10];
-    static int[] nums;
+    static ArrayList<Integer> nums = new ArrayList<>();
     static HashSet<String> set = new HashSet<>();
     static StringBuilder stringBuilder = new StringBuilder();
 
@@ -20,12 +20,14 @@ public class Main {
         N = Integer.parseInt(tokenizer.nextToken());
         M = Integer.parseInt(tokenizer.nextToken());
 
-        nums = new int[N];
         tokenizer = new StringTokenizer(reader.readLine());
         for (int i = 0; i < N; i++) {
-            nums[i] = Integer.parseInt(tokenizer.nextToken());
+            int num = Integer.parseInt(tokenizer.nextToken());
+            if (!nums.contains(num)) {
+                nums.add(num);
+            }
         }
-        Arrays.sort(nums);
+        nums.sort(null);
         reader.close();
 
         func(0);
@@ -48,8 +50,8 @@ public class Main {
         }
 
 
-        for (int i = 0; i < N; i++) {
-            answer[count] = nums[i];
+        for (int num : nums) {
+            answer[count] = num;
             func(count + 1);
         }
     }
