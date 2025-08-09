@@ -38,7 +38,10 @@ public class Main {
             sb.append('\n');
             return;
         }
-        
+
+        if (numbers.length - index + count < 6) {
+            return;
+        }
 
         for (int i = index; i < numbers.length; i++) {
             answer[count] = numbers[i];
