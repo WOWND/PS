@@ -23,7 +23,9 @@ public class Main {
         M = Integer.parseInt(tokenizer.nextToken());
 
         board1 = new int[N][N];
-
+        for (int i = 0; i < N; i++) {
+            Arrays.fill(board1[i], -1);
+        }
 
         for (int i = 0; i < N; i++) {
             String str = reader.readLine();
@@ -57,9 +59,9 @@ public class Main {
     }
 
     public static void bfs(int[] virus) {
-        int[][] dist = new int[N][N];
+        int[][] board2 = new int[N][N];
         for (int i = 0; i < N; i++) {
-            Arrays.fill(dist[i], -1);
+            System.arraycopy(board1[i], 0, board2[i], 0, N);
         }
 
         int moveCnt = 0;
@@ -67,7 +69,7 @@ public class Main {
         for (int i = 0; i < M; i++) {
             Point point = viruses.get(virus[i]);
             queue.add(point);
-            dist[point.x][point.y] = 0;
+            board2[point.x][point.y] = 0;
             moveCnt++;
         }
 
@@ -77,7 +79,7 @@ public class Main {
             Point cur = queue.poll();
             int x = cur.x;
             int y = cur.y;
-            maxTime = Math.max(maxTime, dist[x][y]);
+            maxTime = Math.max(maxTime, board2[x][y]);
 
             for (int i = 0; i < 4; i++) {
                 int nx = dx[i] + x;
@@ -87,10 +89,10 @@ public class Main {
                     continue;
                 }
 
-                if (board1[nx][ny] != 0 || dist[nx][ny] >= 0) {//벽or방문
+                if (board2[nx][ny] >= 0) {//방문했음
                     continue;
                 }
-                dist[nx][ny] = dist[x][y] + 1;
+                board2[nx][ny] = board2[x][y] + 1;
                 queue.add(new Point(nx, ny));
                 moveCnt++;
             }
