@@ -1,49 +1,26 @@
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
+import java.util.*;
 
 class Solution {
-    static class StageInfo implements Comparable<StageInfo>{
-        double value;
-        int stageNum;
-
-        public StageInfo(double value, int stageNum){
-            this.value = value;
-            this.stageNum = stageNum;
-        }
-
-        public int compareTo(StageInfo o){
-            int cv = Double.compare(o.value, this.value);
-            if(cv !=0){
-                return cv;
-            }
-            return Integer.compare(this.stageNum, o.stageNum);
-        }
-    }
-
     public int[] solution(int N, int[] stages) {
-        List<StageInfo> siList = new ArrayList<>();
-
-        int[] fails = new int[N+2];
+        int[] challengers = new int[N+2];
         for(int i: stages){
-            fails[i]++;
+            challengers[i]++;
         }
 
-        int cnt = fails[N+1];
-        for(int i = N; i > 0; i--){
-            int stageCnt = fails[i];
-            cnt += stageCnt;
-            double fp = cnt == 0 ? 0 : (double) stageCnt / cnt;
-            StageInfo stageInfo = new StageInfo(fp, i);
-            siList.add(stageInfo);
+        int cnt = stages.length;
+        Map<Integer, Double> fp = new LinkedHashMap<>();
+        for(int i = 1; i <= N; i++) {
+            int challenger = challengers[i];
+            if (challenger == 0) {
+                fp.put(i, 0.);
+            } else {
+                fp.put(i, (double) challenger / cnt);
+            } 
+            cnt -= challenger;
         }
 
-        return siList.stream().sorted().mapToInt(s->s.stageNum).toArray();
-    }
-
-    public static void main(String[] args) {
-        Solution solution = new Solution();
-        int[] a = solution.solution(3, new int[]{1});
-        System.out.println(Arrays.toString(a));
+        return fp.entrySet().stream().sorted((e1,e2) -> Double.compare(e2.getValue(),e1.getValue()))
+                .mapToInt(e -> e.getKey())
+                .toArray();
     }
 }
