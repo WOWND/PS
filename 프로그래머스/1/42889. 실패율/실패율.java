@@ -11,7 +11,7 @@ class Solution {
         Map<Integer, Double> fp = new LinkedHashMap<>();
         for(int i = 1; i <= N; i++) {
             int challenger = challengers[i];
-            if (challenger == 0) {
+            if (cnt == 0) {
                 fp.put(i, 0.);
             } else {
                 fp.put(i, (double) challenger / cnt);
