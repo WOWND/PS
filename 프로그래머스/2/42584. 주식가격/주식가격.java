@@ -1,15 +1,6 @@
 import java.util.Stack;
 
 class Solution {
-    static class Stocks {
-        int time;
-        int price;
-
-        public Stocks(int time, int price) {
-            this.time = time;
-            this.price = price;
-        }
-    }
 
     public int[] solution(int[] prices) {
         int[] answer = new int[prices.length];
@@ -17,15 +8,13 @@ class Solution {
             answer[i] = prices.length - i - 1;
         }
 
-        Stack<Stocks> stack = new Stack<>();
+        Stack<Integer> stack = new Stack<>();
         for (int time = 0; time < prices.length; time++) {
-            Stocks curr = new Stocks(time, prices[time]);
-
-            while (!stack.isEmpty() && stack.peek().price > curr.price) {
-                Stocks prev = stack.pop();
-                answer[prev.time] = time - prev.time;
+            while (!stack.isEmpty() && prices[stack.peek()] > prices[time]) {
+                Integer prevTime = stack.pop();
+                answer[prevTime] = time - prevTime;
             }
-            stack.push(curr);
+            stack.push(time);
 
         }
         return answer;
