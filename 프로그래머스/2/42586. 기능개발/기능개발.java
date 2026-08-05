@@ -6,26 +6,18 @@ class Solution {
 
         Queue<Integer> q = new ArrayDeque<>();
         for (int i = 0; i < progresses.length; i++) {
-            q.offer(i);
+            q.offer((int) Math.ceil((100.0 - progresses[i]) / speeds[i]));
         }
 
         while (!q.isEmpty()) {
-            int first = q.peek();
-            int cnt = 0;
+            int first = q.poll();
+            int cnt = 1;
 
-            for (int i = first; i < progresses.length; i++) {
-                progresses[i] += speeds[i];
-            }
-
-            while (!q.isEmpty() && progresses[q.peek()] >= 100) {
-                System.out.println(Arrays.toString(progresses));
+            while (!q.isEmpty() && q.peek() <= first) {
                 q.poll();
                 cnt++;
             }
-
-            if (cnt > 0) {
-                answer.add(cnt);
-            }
+            answer.add(cnt);
         }
         return answer.stream().mapToInt(Integer::intValue).toArray();
     }
