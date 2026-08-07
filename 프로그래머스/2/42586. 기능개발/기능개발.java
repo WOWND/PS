@@ -2,24 +2,23 @@ import java.util.*;
 
 class Solution {
     public int[] solution(int[] progresses, int[] speeds) {
-        List<Integer> answer = new ArrayList<>();
-
-        Queue<Integer> q = new ArrayDeque<>();
+        Queue<Integer> endTimeQ = new ArrayDeque<>();
         for (int i = 0; i < progresses.length; i++) {
-            q.offer((int) Math.ceil((100.0 - progresses[i]) / speeds[i]));
+            endTimeQ.offer((int) Math.ceil((100. - progresses[i]) / speeds[i]));
         }
 
-        while (!q.isEmpty()) {
-            int first = q.poll();
+        List<Integer> answer = new ArrayList<>();
+        while (!endTimeQ.isEmpty()) {
+            int curr = endTimeQ.poll();
             int cnt = 1;
 
-            while (!q.isEmpty() && q.peek() <= first) {
-                q.poll();
+            while (!endTimeQ.isEmpty() && endTimeQ.peek() <= curr) {
+                endTimeQ.poll();
                 cnt++;
             }
             answer.add(cnt);
         }
         return answer.stream().mapToInt(Integer::intValue).toArray();
     }
-
+    
 }
