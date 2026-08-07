@@ -1,67 +1,43 @@
+import java.util.Arrays;
 import java.util.Stack;
 
 class Solution {
     public String solution(int n, int k, String[] cmd) {
-        Stack<Integer> stack = new Stack<>();
-
-        int[] up = new int[n];
-        int[] down = new int[n];
-        for (int i = 0; i < n; i++) {
+        int[] up = new int[n + 2];
+        int[] down = new int[n + 2];
+        k++;
+        for (int i = 0; i < n+2; i++) {
             up[i] = i - 1;
             down[i] = i + 1;
         }
+        Stack<Integer> stack = new Stack<>();
 
         for (String s : cmd) {
-
-            if (s.length() > 2) {
-                String[] parts = s.split(" ");
+            String[] parts = s.split(" ");
+            if (parts.length > 1) {
                 int dist = Integer.parseInt(parts[1]);
 
-                while (dist > 0) {
-                    dist--;
-                    if (s.startsWith("U")) {
-                        k = up[k];
-                    } else {
-                        k = down[k];
-                    }
+                while (dist-- > 0) {
+                    k = parts[0].equals("D") ? down[k] : up[k];
                 }
-            } else if (s.startsWith("C")) {
+            } else if (s.equals("C")) {
+                down[up[k]] = down[k];
+                up[down[k]] = up[k];
                 stack.push(k);
 
-                if (down[k] != n) {
-                    up[down[k]] = up[k];
-                }
-                if (up[k] != -1) {
-                    down[up[k]] = down[k];
-                }
-
-                if (down[k] == n) {
-                    k = up[k];
-                } else {
-                    k = down[k];
-                }
-            } else {
+                k = down[k] > n ? up[k] : down[k];
+            } else { // "Z"
                 int z = stack.pop();
-
-                if (up[z] != -1) {
-                    down[up[z]] = z;
-                }
-                if (down[z] != n) {
-                    up[down[z]] = z;
-
-                }
+                down[up[z]] = z;
+                up[down[z]] = z;
             }
-
         }
-
-        boolean[] removed = new boolean[n];
-        while (!stack.isEmpty()) {
-            removed[stack.pop()] = true;
+        
+        char[] answer = new char[n];
+        Arrays.fill(answer, 'O');
+        for (int i : stack) {
+            answer[i - 1] = 'X';
         }
-        StringBuilder sb = new StringBuilder();
-        for (boolean b : removed) {
-            sb.append(b ? "X" : "O");
-        }
-        return sb.toString();
+        return new String(answer);
     }
 }
