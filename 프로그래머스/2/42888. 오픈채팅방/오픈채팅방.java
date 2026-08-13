@@ -2,24 +2,26 @@ import java.util.*;
 
 class Solution {
     public String[] solution(String[] record) {
-        List<String[]> answer = new ArrayList<>();
+        Map<String, String> msg = new HashMap<>();
+        msg.put("Enter", "님이 들어왔습니다.");
+        msg.put("Leave", "님이 나갔습니다.");
 
         Map<String, String> map = new HashMap<>();
         for (String s : record) {
             String[] parts = s.split(" ");
-            String cmd = parts[0];
-            String id = parts[1];
-
-            if (cmd.equals("Enter")) {
-                map.put(id, parts[2]);
-                answer.add(new String[]{id, "님이 들어왔습니다."});
-            } else if (cmd.equals("Leave")) {
-                answer.add(new String[]{id, "님이 나갔습니다."});
-            } else {
-                map.put(id, parts[2]);
+            if (parts.length == 3) {
+                map.put(parts[1], parts[2]);
             }
         }
 
-        return answer.stream().map(a -> map.get(a[0]) + a[1]).toArray(String[]::new);
+        List<String> answer = new ArrayList<>();
+        for (String s : record) {
+            String[] parts = s.split(" ");
+            if (msg.containsKey(parts[0])) {
+                answer.add(map.get(parts[1]) + msg.get(parts[0]));
+            }
+        }
+
+        return answer.toArray(String[]::new);
     }
 }
